@@ -1,0 +1,235 @@
+.metricsDisplayPage {
+  padding: 16px;
+
+  .statsRow {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .statCard {
+    flex: 1;
+    min-width: 200px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .statHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+
+      .statLabel {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .statIcon {
+        font-size: 20px;
+        color: #999;
+      }
+    }
+
+    .statValue {
+      font-size: 28px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .statTrend {
+      margin-top: 8px;
+      font-size: 12px;
+
+      &.up {
+        color: #52c41a;
+      }
+
+      &.down {
+        color: #ff4d4f;
+      }
+
+      &.same {
+        color: #999;
+      }
+    }
+  }
+
+  .chartRow {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    .chartCard {
+      flex: 1;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+      .chartHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .chartTitle {
+          font-size: 15px;
+          font-weight: 600;
+          color: #333;
+        }
+      }
+
+      .chartPlaceholder {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafa;
+        border-radius: 4px;
+        color: #999;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .channelStatusCard {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .cardHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .cardTitle {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .refreshButton {
+        color: #1890ff;
+        cursor: pointer;
+
+        &:hover {
+          color: #40a9ff;
+        }
+      }
+    }
+
+    .channelList {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .channelItem {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #f0f0f0;
+      transition: all 0.3s;
+
+      &:hover {
+        border-color: #1890ff;
+        box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+      }
+
+      &.active {
+        border-color: #52c41a;
+        background: #f6ffed;
+      }
+
+      &.idle {
+        background: #fafafa;
+      }
+
+      .channelHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .channelName {
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .channelStatus {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+
+          &.active {
+            background: #52c41a;
+            animation: pulse 1.5s ease-in-out infinite;
+          }
+
+          &.idle {
+            background: #d9d9d9;
+          }
+        }
+      }
+
+      .channelInfo {
+        font-size: 12px;
+        color: #666;
+
+        .infoRow {
+          margin-bottom: 4px;
+          display: flex;
+          justify-content: space-between;
+
+          .infoLabel {
+            color: #999;
+          }
+        }
+      }
+    }
+  }
+
+  .recentTasksCard {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .cardHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .cardTitle {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .viewAll {
+        color: #1890ff;
+        cursor: pointer;
+        font-size: 13px;
+
+        &:hover {
+          color: #40a9ff;
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

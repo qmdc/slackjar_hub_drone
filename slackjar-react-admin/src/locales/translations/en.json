@@ -3,6 +3,11 @@
   "loading": "Loading...",
   "menu": {
     "home": "Home",
+    "detection management": "Detection",
+    "video detection": "Video Detection",
+    "detection history": "Detection History",
+    "model management": "Model Management",
+    "metrics display": "Metrics Display",
     "account management": "Account",
     "user management": "User",
     "role management": "Role",

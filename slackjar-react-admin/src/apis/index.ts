@@ -20,4 +20,17 @@ export type {HitokotoResponse, IpInfoResponse} from './modules/third'
 export {saveDict, deleteDict, getDictById, getDictByCode, pageQueryDicts} from './modules/dict'
 export type {DictItem, SysDictRequest, DictItemRequest, SysDictResponse, DictItemResponse, SysDictPageQuery} from './modules/dict'
 
+export {
+    getModelPage, getModelDetail, listEnabledModels, createModel, updateModel, deleteModel, setDefaultModel,
+    getTaskPage, getTaskDetail, getActiveTasks, getChannelTask,
+    startDetection, stopDetection, stopDetectionByChannel, exportDetectionHistory,
+    getOverviewMetrics, getTaskMetrics, getChannelStatus, getRecentTasks
+} from './modules/detection'
+export type {
+    DetectionModel, DetectionModelPageQuery,
+    DetectionTask, DetectionTaskPageQuery, DetectionStartRequest,
+    DetectionObject, FrameDetectionResult, DetectionSummary,
+    OverviewMetrics, TaskMetrics, ChannelStatus
+} from './modules/detection'
+
 export type {ResponseData, PageResult} from './modules/types'
