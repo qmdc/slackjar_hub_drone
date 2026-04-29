@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 import Portal from "../layout/Portal";
 import welcome from "./modules/welcome";
 import system from "./modules/system";
+import detection from "./modules/detection";
 import front from "./front/front";
 import other from "./modules/other";
 
@@ -32,6 +33,7 @@ export declare type MenuRouteObject = {
  */
 const portalRouters: MenuRouteObject[] = [
     {...welcome},   // 首页/欢迎页
+    {...detection}, // 检测模块
     {...system},    // 系统设置模块
     {...other},     // 其他模块
 ]

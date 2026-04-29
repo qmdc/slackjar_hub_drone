@@ -1,0 +1,43 @@
+.modelManagementPage {
+  padding: 16px;
+
+  .searchBar {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .searchInput {
+      width: 200px;
+    }
+
+    .statusSelect {
+      width: 150px;
+    }
+  }
+
+  .tableContainer {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+
+    .actionButton {
+      margin-right: 8px;
+    }
+  }
+}
+
+.modelFormModal {
+  .formItem {
+    margin-bottom: 16px;
+  }
+
+  .modelUpload {
+    width: 100%;
+  }
+
+  .numberInput {
+    width: 100%;
+  }
+}

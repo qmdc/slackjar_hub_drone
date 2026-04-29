@@ -60,4 +60,18 @@ public class PageResult<T> {
     public static <T> PageResult<T> of(List<T> list, Long total, Integer pageNo, Integer pageSize) {
         return new PageResult<>(list, total, pageNo, pageSize);
     }
+
+    /**
+     * 从MyBatis-Plus Page对象创建
+     */
+    public static <T> PageResult<T> of(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page) {
+        PageResult<T> result = new PageResult<>(
+                page.getRecords(),
+                page.getTotal(),
+                (int) page.getCurrent(),
+                (int) page.getSize()
+        );
+        result.setTotalPages((int) page.getPages());
+        return result;
+    }
 }

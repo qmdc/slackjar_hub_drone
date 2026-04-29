@@ -3,6 +3,11 @@
   "loading": "加载中...",
   "menu": {
     "home": "首页",
+    "detection management": "目标检测",
+    "video detection": "视频检测",
+    "detection history": "检测历史",
+    "model management": "模型管理",
+    "metrics display": "指标展示",
     "account management": "账户管理",
     "user management": "用户管理",
     "role management": "角色管理",

@@ -1,0 +1,340 @@
+.videoDetectionPage {
+  padding: 16px;
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .controlBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .channelStatus {
+      display: flex;
+      gap: 12px;
+
+      .statusTag {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+
+        .statusDot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #d9d9d9;
+
+          &.active {
+            background: #52c41a;
+            animation: pulse 1.5s ease-in-out infinite;
+          }
+
+          &.error {
+            background: #ff4d4f;
+          }
+        }
+
+        &.active {
+          background: #f6ffed;
+          border: 1px solid #b7eb8f;
+        }
+
+        &.idle {
+          background: #fafafa;
+          border: 1px solid #d9d9d9;
+        }
+      }
+    }
+
+    .globalActions {
+      display: flex;
+      gap: 8px;
+    }
+  }
+
+  .gridContainer {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+.channelCard {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+
+    .channelTitle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 15px;
+
+      .channelStatus {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #d9d9d9;
+
+        &.active {
+          background: #52c41a;
+          animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        &.error {
+          background: #ff4d4f;
+        }
+      }
+    }
+
+    .channelActions {
+      display: flex;
+      gap: 4px;
+    }
+  }
+
+  .cardBody {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .videoContainer {
+    flex: 1;
+    min-height: 200px;
+    background: #000;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+    .videoPlaceholder {
+      color: #666;
+      text-align: center;
+
+      .placeholderIcon {
+        font-size: 48px;
+        margin-bottom: 8px;
+        color: #999;
+      }
+
+      .placeholderText {
+        font-size: 14px;
+        color: #999;
+      }
+    }
+
+    .videoElement {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .canvasOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .detectionOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .statsOverlay {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+
+      .statRow {
+        margin-bottom: 2px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .controlPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .modelSelect {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .paramInput {
+        width: 80px;
+      }
+
+      .paramLabel {
+        font-size: 12px;
+        color: #666;
+        white-space: nowrap;
+      }
+    }
+
+    .actionRow {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+
+      .uploadBtn {
+        flex: 1;
+      }
+
+      .startBtn {
+        flex: 1;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.detectionObject {
+  position: absolute;
+  border: 2px solid;
+  pointer-events: none;
+
+  .objectLabel {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    background: inherit;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+    border-radius: 2px 2px 0 0;
+  }
+
+  &.person {
+    border-color: #1890ff;
+    background: rgba(24, 144, 255, 0.1);
+
+    .objectLabel {
+      background: #1890ff;
+    }
+  }
+
+  &.car {
+    border-color: #52c41a;
+    background: rgba(82, 196, 26, 0.1);
+
+    .objectLabel {
+      background: #52c41a;
+    }
+  }
+
+  &.truck {
+    border-color: #722ed1;
+    background: rgba(114, 46, 209, 0.1);
+
+    .objectLabel {
+      background: #722ed1;
+    }
+  }
+
+  &.bus {
+    border-color: #eb2f96;
+    background: rgba(235, 47, 150, 0.1);
+
+    .objectLabel {
+      background: #eb2f96;
+    }
+  }
+
+  &.motorcycle {
+    border-color: #fa8c16;
+    background: rgba(250, 140, 22, 0.1);
+
+    .objectLabel {
+      background: #fa8c16;
+    }
+  }
+
+  &.bicycle {
+    border-color: #13c2c2;
+    background: rgba(19, 194, 194, 0.1);
+
+    .objectLabel {
+      background: #13c2c2;
+    }
+  }
+
+  &.uav {
+    border-color: #ff4d4f;
+    background: rgba(255, 77, 79, 0.1);
+
+    .objectLabel {
+      background: #ff4d4f;
+    }
+  }
+
+  &.default {
+    border-color: #8c8c8c;
+    background: rgba(140, 140, 140, 0.1);
+
+    .objectLabel {
+      background: #8c8c8c;
+    }
+  }
+}
