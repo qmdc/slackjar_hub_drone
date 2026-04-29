@@ -92,42 +92,42 @@ const VideoDetection: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        const socket = socketManager.getSocket();
-        if (!socket) {
-            return;
-        }
-
-        socket.on('DETECTION_FRAME_RESULT', (data: any) => {
-            const channelIndex = data.channelIndex;
+        // 定义处理器函数
+        const handleFrameResultMsg = (message: any) => {
+            const data = message.content;
+            const channelIndex = data?.channelIndex;
             if (channelIndex >= 0 && channelIndex < 4) {
                 handleFrameResult(channelIndex, data);
             }
-        });
+        };
 
-        socket.on('DETECTION_TASK_PROGRESS', (data: any) => {
-            const channelIndex = data.channelIndex;
+        const handleProgressMsg = (message: any) => {
+            const data = message.content;
+            const channelIndex = data?.channelIndex;
             if (channelIndex >= 0 && channelIndex < 4) {
                 handleTaskProgress(channelIndex, data);
             }
-        });
+        };
 
-        socket.on('DETECTION_TASK_START', (data: any) => {
-            const channelIndex = data.channelIndex;
+        const handleTaskStartMsg = (message: any) => {
+            const data = message.content;
+            const channelIndex = data?.channelIndex;
             if (channelIndex >= 0 && channelIndex < 4) {
                 setChannels(prev => {
                     const newChannels = [...prev];
                     newChannels[channelIndex] = {
                         ...newChannels[channelIndex],
                         isActive: true,
-                        taskId: data.taskId,
+                        taskId: data?.taskId,
                     };
                     return newChannels;
                 });
             }
-        });
+        };
 
-        socket.on('DETECTION_TASK_COMPLETED', (data: any) => {
-            const channelIndex = data.channelIndex;
+        const handleTaskCompletedMsg = (message: any) => {
+            const data = message.content;
+            const channelIndex = data?.channelIndex;
             if (channelIndex >= 0 && channelIndex < 4) {
                 setChannels(prev => {
                     const newChannels = [...prev];
@@ -139,10 +139,11 @@ const VideoDetection: React.FC = () => {
                 });
                 message.info(`通道 ${channelIndex + 1} 检测完成`);
             }
-        });
+        };
 
-        socket.on('DETECTION_TASK_STOPPED', (data: any) => {
-            const channelIndex = data.channelIndex;
+        const handleTaskStoppedMsg = (message: any) => {
+            const data = message.content;
+            const channelIndex = data?.channelIndex;
             if (channelIndex >= 0 && channelIndex < 4) {
                 setChannels(prev => {
                     const newChannels = [...prev];
@@ -154,10 +155,11 @@ const VideoDetection: React.FC = () => {
                 });
                 message.info(`通道 ${channelIndex + 1} 检测已停止`);
             }
-        });
+        };
 
-        socket.on('DETECTION_TASK_ERROR', (data: any) => {
-            const channelIndex = data.channelIndex;
+        const handleTaskErrorMsg = (message: any) => {
+            const data = message.content;
+            const channelIndex = data?.channelIndex;
             if (channelIndex >= 0 && channelIndex < 4) {
                 setChannels(prev => {
                     const newChannels = [...prev];
@@ -167,17 +169,26 @@ const VideoDetection: React.FC = () => {
                     };
                     return newChannels;
                 });
-                message.error(`通道 ${channelIndex + 1} 检测出错: ${data.error}`);
+                message.error(`通道 ${channelIndex + 1} 检测出错: ${data?.error || '未知错误'}`);
             }
-        });
+        };
 
+        // 注册处理器
+        socketManager.registerHandler('DETECTION_FRAME_RESULT', handleFrameResultMsg);
+        socketManager.registerHandler('DETECTION_TASK_PROGRESS', handleProgressMsg);
+        socketManager.registerHandler('DETECTION_TASK_START', handleTaskStartMsg);
+        socketManager.registerHandler('DETECTION_TASK_COMPLETED', handleTaskCompletedMsg);
+        socketManager.registerHandler('DETECTION_TASK_STOPPED', handleTaskStoppedMsg);
+        socketManager.registerHandler('DETECTION_TASK_ERROR', handleTaskErrorMsg);
+
+        // 清理函数
         return () => {
-            socket.off('DETECTION_FRAME_RESULT');
-            socket.off('DETECTION_TASK_PROGRESS');
-            socket.off('DETECTION_TASK_START');
-            socket.off('DETECTION_TASK_COMPLETED');
-            socket.off('DETECTION_TASK_STOPPED');
-            socket.off('DETECTION_TASK_ERROR');
+            socketManager.unregisterHandler('DETECTION_FRAME_RESULT', handleFrameResultMsg);
+            socketManager.unregisterHandler('DETECTION_TASK_PROGRESS', handleProgressMsg);
+            socketManager.unregisterHandler('DETECTION_TASK_START', handleTaskStartMsg);
+            socketManager.unregisterHandler('DETECTION_TASK_COMPLETED', handleTaskCompletedMsg);
+            socketManager.unregisterHandler('DETECTION_TASK_STOPPED', handleTaskStoppedMsg);
+            socketManager.unregisterHandler('DETECTION_TASK_ERROR', handleTaskErrorMsg);
         };
     }, []);
 

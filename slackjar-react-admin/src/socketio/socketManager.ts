@@ -121,6 +121,25 @@ class SocketManager {
     }
 
     /**
+     * 注销消息处理器
+     * @param bizType 业务类型
+     * @param handler 处理器函数
+     */
+    unregisterHandler(bizType: string, handler: MessageHandler): void {
+        const existingHandlers = this.handlers.get(bizType);
+        if (existingHandlers) {
+            const index = existingHandlers.indexOf(handler);
+            if (index !== -1) {
+                existingHandlers.splice(index, 1);
+                console.log(`[Socket] 注销处理器: ${bizType}`);
+            }
+            if (existingHandlers.length === 0) {
+                this.handlers.delete(bizType);
+            }
+        }
+    }
+
+    /**
      * 断开Socket连接
      */
     disconnect(): void {

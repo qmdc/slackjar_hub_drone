@@ -243,9 +243,8 @@ public class DetectionProcessManager {
         Long taskId = processInfo.taskId;
         Integer channelIndex = processInfo.channelIndex;
 
-        Integer frameIndex = (Integer) data.get("frame_index");
-        Long frameTime = data.get("frame_time") instanceof Number ?
-                ((Number) data.get("frame_time")).longValue() : null;
+        Integer frameIndex = getIntValue(data.get("frame_index"));
+        Long frameTime = getLongValue(data.get("frame_time"));
 
         List<Map<String, Object>> objectsData = (List<Map<String, Object>>) data.get("objects");
         List<DetectionObject> objects = new ArrayList<>();
@@ -253,15 +252,14 @@ public class DetectionProcessManager {
         if (objectsData != null) {
             for (Map<String, Object> objData : objectsData) {
                 DetectionObject obj = new DetectionObject();
-                obj.setTrackId(objData.get("track_id") != null ?
-                        ((Number) objData.get("track_id")).intValue() : null);
+                obj.setTrackId(getIntValue(objData.get("track_id")));
                 obj.setClassName((String) objData.get("class_name"));
                 obj.setConfidence(objData.get("confidence") != null ?
-                        BigDecimal.valueOf(((Number) objData.get("confidence")).doubleValue()) : null);
-                obj.setX(((Number) objData.get("x")).intValue());
-                obj.setY(((Number) objData.get("y")).intValue());
-                obj.setWidth(((Number) objData.get("width")).intValue());
-                obj.setHeight(((Number) objData.get("height")).intValue());
+                        BigDecimal.valueOf(((Number) objData.get("confidence")).doubleValue()) : BigDecimal.ZERO);
+                obj.setX(getIntValue(objData.get("x"), 0));
+                obj.setY(getIntValue(objData.get("y"), 0));
+                obj.setWidth(getIntValue(objData.get("width"), 0));
+                obj.setHeight(getIntValue(objData.get("height"), 0));
                 objects.add(obj);
 
                 Map<String, Integer> classCounts = processInfo.summary.getClassCounts();
@@ -302,9 +300,9 @@ public class DetectionProcessManager {
     }
 
     private void handleProgress(Map<String, Object> data, ProcessInfo processInfo) {
-        Integer totalFrames = (Integer) data.get("total_frames");
-        Integer processedFrames = (Integer) data.get("processed_frames");
-        Integer fps = (Integer) data.get("fps");
+        Integer totalFrames = getIntValue(data.get("total_frames"));
+        Integer processedFrames = getIntValue(data.get("processed_frames"), 0);
+        Integer fps = getIntValue(data.get("fps"), 0);
 
         if (totalFrames != null) {
             processInfo.totalFrames = totalFrames;
@@ -331,8 +329,8 @@ public class DetectionProcessManager {
     private void handleSummary(Map<String, Object> data, ProcessInfo processInfo) {
         Map<String, Object> summaryData = (Map<String, Object>) data.get("summary");
         if (summaryData != null) {
-            processInfo.summary.setProcessedFrames((Integer) summaryData.get("processed_frames"));
-            processInfo.summary.setTotalObjects((Integer) summaryData.get("total_objects"));
+            processInfo.summary.setProcessedFrames(getIntValue(summaryData.get("processed_frames"), 0));
+            processInfo.summary.setTotalObjects(getIntValue(summaryData.get("total_objects"), 0));
 
             Map<String, Integer> classCounts = (Map<String, Integer>) summaryData.get("class_counts");
             if (classCounts != null) {
@@ -474,5 +472,47 @@ public class DetectionProcessManager {
         }
         executorService.shutdown();
         log.info("所有检测进程已关闭");
+    }
+
+    private Integer getIntValue(Object value) {
+        return getIntValue(value, null);
+    }
+
+    private Integer getIntValue(Object value, Integer defaultValue) {
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+        if (value instanceof String) {
+            try {
+                return Integer.parseInt((String) value);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
+    }
+
+    private Long getLongValue(Object value) {
+        return getLongValue(value, null);
+    }
+
+    private Long getLongValue(Object value, Long defaultValue) {
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        }
+        if (value instanceof String) {
+            try {
+                return Long.parseLong((String) value);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
     }
 }
