@@ -84,6 +84,7 @@ const VideoDetection: React.FC = () => {
 
     const videoRefs = useRef<(HTMLVideoElement | null)[]>([null, null, null, null]);
     const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([null, null, null, null]);
+    const uploadRefs = useRef<(HTMLInputElement | null)[]>([null, null, null, null]);
 
     useEffect(() => {
         loadModels();
@@ -345,6 +346,22 @@ const VideoDetection: React.FC = () => {
         }
     };
 
+    const handlePlaceholderClick = (channelIndex: number) => {
+        if (uploadRefs.current[channelIndex]) {
+            uploadRefs.current[channelIndex]!.click();
+        }
+    };
+
+    const handleFileSelect = (channelIndex: number, event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            handleVideoUpload(channelIndex, files[0]);
+        }
+        if (event.target) {
+            event.target.value = '';
+        }
+    };
+
     const handleVideoLoaded = (channelIndex: number) => {
         setChannels(prev => {
             const newChannels = [...prev];
@@ -465,12 +482,25 @@ const VideoDetection: React.FC = () => {
                     </div>
                 }
             >
+                <input
+                    ref={(el) => (uploadRefs.current[channelIndex] = el)}
+                    type="file"
+                    accept="video/*"
+                    style={{display: 'none'}}
+                    onChange={(e) => handleFileSelect(channelIndex, e)}
+                />
                 <div className={styles.cardBody}>
                     <div className={styles.videoContainer}>
                         {!channel.videoUrl ? (
-                            <div className={styles.videoPlaceholder}>
+                            <div
+                                className={`${styles.videoPlaceholder} ${!channel.isActive ? styles.clickable : ''}`}
+                                onClick={() => !channel.isActive && handlePlaceholderClick(channelIndex)}
+                            >
                                 <VideoCameraOutlined className={styles.placeholderIcon}/>
-                                <div className={styles.placeholderText}>请上传视频文件</div>
+                                <div className={styles.placeholderText}>点击上传视频文件</div>
+                                {!channel.isActive && (
+                                    <div className={styles.placeholderHint}>或点击下方上传按钮</div>
+                                )}
                             </div>
                         ) : (
                             <>
